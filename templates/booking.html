@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block title %}Book a Session - Pinky Digital Studio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card booking-card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0"><i class="fas fa-calendar-alt"></i> Book Your Photography Session</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('booking') }}">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="name" class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label">Email *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label">Phone Number *</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="session_type" class="form-label">Session Type *</label>
+                                <select class="form-control" id="session_type" name="session_type" required>
+                                    <option value="">Select session type</option>
+                                    <option value="portrait">Portrait Session - $150</option>
+                                    <option value="wedding">Wedding Package - $1500</option>
+                                    <option value="commercial">Commercial Shoot - $300</option>
+                                    <option value="family">Family Portrait - $200</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="session_date" class="form-label">Preferred Date *</label>
+                                <input type="date" class="form-control" id="session_date" name="session_date" required>
+                            </div>
+                            <div class="col-12">
+                                <label for="special_requests" class="form-label">Special Requests</label>
+                                <textarea class="form-control" id="special_requests" name="special_requests" rows="4" placeholder="Any special requests or details about your shoot..."></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-primary btn-lg w-100">Submit Booking Request</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

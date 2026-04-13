@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - PInky Digital Studio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="mb-4">Admin Dashboard</h1>
+    
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="stat-card">
+                <i class="fas fa-users"></i>
+                <h3>{{ total_clients }}</h3>
+                <p>Total Clients</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <i class="fas fa-calendar-check"></i>
+                <h3>{{ total_bookings }}</h3>
+                <p>Total Bookings</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <i class="fas fa-images"></i>
+                <h3>{{ total_photos }}</h3>
+                <p>Photos Uploaded</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="stat-card">
+                <i class="fas fa-clock"></i>
+                <h3>{{ pending_bookings }}</h3>
+                <p>Pending Bookings</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Recent Bookings</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Client</th>
+                                    <th>Type</th>
+                                    <th>Date</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for booking in recent_bookings %}
+                                <tr>
+                                    <td>{{ booking.client.name }}</td>
+                                    <td>{{ booking.session_type }}</td>
+                                    <td>{{ booking.session_date.strftime('%Y-%m-%d') }}</td>
+                                    <td><span class="badge bg-warning">{{ booking.status }}</span></td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Recent Photos</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        {% for photo in recent_photos %}
+                        <div class="col-4 mb-3">
+                            <img src="{{ photo.thumbnail_path }}" class="img-fluid rounded" alt="{{ photo.description }}">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

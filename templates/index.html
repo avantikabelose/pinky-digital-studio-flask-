@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}Pinky Digital Studio - Professional Photography{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="hero-overlay"></div>
+    <div class="container hero-content">
+        <h1 class="display-4 fw-bold animate-text">Capture Your Moments</h1>
+        <p class="lead mb-4">Professional photography studio dedicated to creating timeless memories</p>
+        <a href="{{ url_for('booking') }}" class="btn btn-primary btn-lg">Book Your Session</a>
+    </div>
+</section>
+
+<section class="services-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Our Services</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="service-card text-center">
+                    <i class="fas fa-camera-retro fa-3x mb-3"></i>
+                    <h4>Portrait Photography</h4>
+                    <p>Professional headshots and creative portraits</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-card text-center">
+                    <i class="fas fa-ring fa-3x mb-3"></i>
+                    <h4>Wedding Photography</h4>
+                    <p>Capturing your special day beautifully</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="service-card text-center">
+                    <i class="fas fa-briefcase fa-3x mb-3"></i>
+                    <h4>Commercial Shoots</h4>
+                    <p>Product and corporate photography</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="gallery-preview py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Recent Work</h2>
+        <div class="row g-4">
+            {% for photo in recent_photos %}
+            <div class="col-md-3">
+                <div class="gallery-card">
+                    <img src="{{ photo.thumbnail_path }}" alt="{{ photo.description }}" class="img-fluid">
+                    <div class="overlay">
+                        <p>{{ photo.description }}</p>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <div class="col-12 text-center">
+                <p>No photos uploaded yet. Check back soon!</p>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('gallery') }}" class="btn btn-outline-primary">View Full Gallery</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

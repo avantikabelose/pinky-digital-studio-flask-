@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Gallery - Pinky Digital Studio{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-4">Our Gallery</h1>
+    
+    <div class="category-filters text-center mb-5">
+        <button class="filter-btn active" data-category="all">All</button>
+        {% for category in categories %}
+        <button class="filter-btn" data-category="{{ category }}">{{ category }}</button>
+        {% endfor %}
+    </div>
+    
+    <div class="upload-section mb-5">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Upload New Photo</h5>
+                <form action="{{ url_for('upload_photo') }}" method="POST" enctype="multipart/form-data">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <input type="file" name="photo" class="form-control" accept="image/*" required>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="text" name="description" class="form-control" placeholder="Description">
+                        </div>
+                        <div class="col-md-2">
+                            <input type="text" name="category" class="form-control" placeholder="Category">
+                        </div>
+                        <div class="col-md-1">
+                            <button type="submit" class="btn btn-primary w-100">Upload</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row g-4 gallery-grid">
+        {% for photo in photos %}
+        <div class="col-md-3 gallery-item" data-category="{{ photo.category }}">
+            <div class="gallery-card">
+                <img src="{{ photo.thumbnail_path }}" alt="{{ photo.description }}" class="img-fluid">
+                <div class="overlay">
+                    <p class="mb-1">{{ photo.description }}</p>
+                    <small class="text-muted">{{ photo.category }}</small>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12 text-center">
+            <p>No photos in gallery yet.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
