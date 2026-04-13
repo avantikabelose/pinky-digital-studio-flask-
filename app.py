@@ -12,16 +12,19 @@ load_dotenv()
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key')
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///photos.db')
+
+# Use /tmp for SQLite on Render (writable location)
+db_path = os.path.join('/tmp', 'photos.db')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', f'sqlite:///{db_path}')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
 
-# Allowed extensions
+# Configure upload folder
+UPLOAD_FOLDER = os.path.join('static', 'uploads')
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif', 'webp'}
-
-# Ensure upload directory exists
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
@@ -67,9 +70,17 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def create_thumbnail(input_path, output_path, size=(300, 300)):
-    with Image.open(input_path) as img:
-        img.thumbnail(size)
-        img.save(output_path, optimize=True, quality=85)
+    try:
+        with Image.open(input_path) as img:
+            img.thumbnail(size)
+            img.save(output_path, optimize=True, quality=85)
+    except Exception as e:
+        print(f"Thumbnail error: {e}")
+
+# Create tables before first request
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 @app.route('/')
 def index():
